@@ -6,10 +6,8 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
-import com.autobots.automanager.controles.DocumentoControle;
 import com.autobots.automanager.controles.EnderecoControle;
-import com.autobots.automanager.entidades.Documento;
-import com.autobots.automanager.entidades.Endereco;
+import com.autobots.automanager.entitades.Endereco;
 
 @Component
 public class AdicionadorLinkEndereco implements AdicionadorLink<Endereco> {

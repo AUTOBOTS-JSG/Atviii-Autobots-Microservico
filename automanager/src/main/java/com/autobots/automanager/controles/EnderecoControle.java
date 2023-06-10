@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.autobots.automanager.adicionadores.AdicionadorLinkEndereco;
-import com.autobots.automanager.entidades.Cliente;
-import com.autobots.automanager.entidades.Endereco;
-import com.autobots.automanager.modelo.EnderecoAtualizador;
-import com.autobots.automanager.modelo.EnderecoSelecionador;
-import com.autobots.automanager.repositorios.ClienteRepositorio;
+import com.autobots.automanager.atualizadores.EnderecoAtualizador;
+import com.autobots.automanager.entitades.Endereco;
+import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.repositorios.EnderecoRepositorio;
+import com.autobots.automanager.repositorios.UsuarioRepositorio;
+import com.autobots.automanager.selecionadores.EnderecoSelecionador;
 
 @RestController
 @RequestMapping("/endereco")
@@ -28,7 +28,7 @@ public class EnderecoControle {
 	@Autowired
 	private EnderecoRepositorio repositorioEndereco;
 	@Autowired
-	private ClienteRepositorio repositorioCliente;
+	private UsuarioRepositorio repositorioUsuario;
 	@Autowired
 	private EnderecoSelecionador selecionadorEndereco;
 	@Autowired
@@ -67,9 +67,9 @@ public class EnderecoControle {
 	public ResponseEntity<?> cadastrarEndereco(@RequestBody Endereco endereco, @PathVariable long id) {
 		HttpStatus status = HttpStatus.CONFLICT;
 		if (endereco.getId() == null) {
-			Cliente cliente = repositorioCliente.getById(id);
-			cliente.setEndereco(endereco);
-			repositorioCliente.save(cliente);
+			Usuario usuario = repositorioUsuario.getById(id);
+			usuario.setEndereco(endereco);
+			repositorioUsuario.save(usuario);
 			status = HttpStatus.CREATED;
 		}
 		return new ResponseEntity<>(status);
@@ -94,10 +94,10 @@ public class EnderecoControle {
 	@DeleteMapping("/excluir/{id}") 
 	public ResponseEntity<?> excluirEndereco(@PathVariable long id) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
-		Cliente cliente = repositorioCliente.getById(id);
-		if (cliente.getEndereco()!= null) {
-		    cliente.setEndereco(null);
-		    repositorioCliente.save(cliente);
+		Usuario usuario = repositorioUsuario.getById(id);
+		if (usuario.getEndereco()!= null) {
+		    usuario.setEndereco(null);
+		    repositorioUsuario.save(usuario);
 			status = HttpStatus.OK;
 		}
 		return new ResponseEntity<>(status);

@@ -1,6 +1,7 @@
 package com.autobots.automanager.controles;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.autobots.automanager.adicionadores.AdicionadorLinkTelefone;
-import com.autobots.automanager.entidades.Cliente;
-import com.autobots.automanager.entidades.Telefone;
-import com.autobots.automanager.modelo.TelefoneAtualizador;
-import com.autobots.automanager.modelo.TelefoneSelecionador;
-import com.autobots.automanager.repositorios.ClienteRepositorio;
+import com.autobots.automanager.atualizadores.TelefoneAtualizador;
+import com.autobots.automanager.entitades.Telefone;
+import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.repositorios.TelefoneRepositorio;
+import com.autobots.automanager.repositorios.UsuarioRepositorio;
+import com.autobots.automanager.selecionadores.TelefoneSelecionador;
 
 @RestController
 @RequestMapping("/telefone")
@@ -28,7 +29,7 @@ public class TelefoneControle {
 	@Autowired
 	private TelefoneRepositorio repositorioTelefone;
 	@Autowired
-	private ClienteRepositorio repositorioCliente;
+	private UsuarioRepositorio repositorioUsuario;
 	@Autowired
 	private TelefoneSelecionador selecionadorTelefone;
 	@Autowired
@@ -65,9 +66,9 @@ public class TelefoneControle {
 	public ResponseEntity<?> cadastrarTelefone(@RequestBody Telefone telefone, @PathVariable long id) {
 		HttpStatus status = HttpStatus.CONFLICT;
 		if (telefone.getId() == null) {
-			Cliente cliente = repositorioCliente.getById(id);
-			cliente.getTelefones().add(telefone);
-		    repositorioCliente.save(cliente);
+			Usuario usuario = repositorioUsuario.getById(id);
+			usuario.getTelefones().add(telefone);
+		    repositorioUsuario.save(usuario);
 			status = HttpStatus.CREATED;
 		}
 		return new ResponseEntity<>(status);
@@ -95,16 +96,16 @@ public class TelefoneControle {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Telefone telefone = repositorioTelefone.getById(exclusao.getId());
 		if (telefone != null) {
-			Cliente cliente = repositorioCliente.getById(id);
-			List<Telefone> telefonesCliente = cliente.getTelefones();
-			for (Telefone tel : telefonesCliente) {
+			Usuario usuario = repositorioUsuario.getById(id);
+			Set<Telefone> telefonesUsuario = usuario.getTelefones();
+			for (Telefone tel : telefonesUsuario) {
 		        if (tel.getId() == exclusao.getId()) {
-		            telefonesCliente.remove(tel);
+		            telefonesUsuario.remove(tel);
 		            break;
 		        }
 		    }
-		    cliente.setTelefones(telefonesCliente);
-			repositorioCliente.save(cliente);
+		    usuario.setTelefones(telefonesUsuario);
+			repositorioUsuario.save(usuario);
 			status = HttpStatus.OK;
 		}
 		return new ResponseEntity<>(status);

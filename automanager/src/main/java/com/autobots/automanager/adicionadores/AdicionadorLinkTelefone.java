@@ -7,7 +7,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.autobots.automanager.controles.TelefoneControle;
-import com.autobots.automanager.entidades.Telefone;
+import com.autobots.automanager.entitades.Telefone;
 
 @Component
 public class AdicionadorLinkTelefone implements AdicionadorLink<Telefone> {

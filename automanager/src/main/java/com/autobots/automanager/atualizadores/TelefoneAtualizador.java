@@ -1,11 +1,12 @@
-package com.autobots.automanager.modelo;
+package com.autobots.automanager.atualizadores;
 
-import java.util.List;
+import java.util.Set;
 
 import com.autobots.automanager.entitades.Telefone;
+import com.autobots.automanager.modelo.VerificadoresNulo;
 
 public class TelefoneAtualizador {
-	private StringVerificadorNulo verificador = new StringVerificadorNulo();
+	private VerificadoresNulo verificador = new VerificadoresNulo();
 
 	public void atualizar(Telefone telefone, Telefone atualizacao) {
 		if (atualizacao != null) {
@@ -18,7 +19,7 @@ public class TelefoneAtualizador {
 		}
 	}
 
-	public void atualizar(List<Telefone> telefones, List<Telefone> atualizacoes) {
+	public void atualizar(Set<Telefone> telefones, Set<Telefone> atualizacoes) {
 		for (Telefone atualizacao : atualizacoes) {
 			for (Telefone telefone : telefones) {
 				if (atualizacao.getId() != null) {

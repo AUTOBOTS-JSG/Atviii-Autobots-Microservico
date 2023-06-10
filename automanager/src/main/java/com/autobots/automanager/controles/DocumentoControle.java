@@ -1,6 +1,7 @@
 package com.autobots.automanager.controles;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.autobots.automanager.adicionadores.AdicionadorLinkDocumento;
-import com.autobots.automanager.entidades.Cliente;
-import com.autobots.automanager.entidades.Documento;
-import com.autobots.automanager.modelo.DocumentoAtualizador;
-import com.autobots.automanager.modelo.DocumentoSelecionador;
-import com.autobots.automanager.repositorios.ClienteRepositorio;
+import com.autobots.automanager.atualizadores.DocumentoAtualizador;
+import com.autobots.automanager.entitades.Documento;
+import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.repositorios.DocumentoRepositorio;
+import com.autobots.automanager.repositorios.UsuarioRepositorio;
+import com.autobots.automanager.selecionadores.DocumentoSelecionador;
 
 @RestController
 @RequestMapping("/documento")
@@ -28,7 +29,7 @@ public class DocumentoControle {
 	@Autowired
 	private DocumentoRepositorio repositorioDocumento;
 	@Autowired
-	private ClienteRepositorio repositorioCliente;
+	private UsuarioRepositorio repositorioUsuario;
 	@Autowired
 	private DocumentoSelecionador selecionadorDocumento;
 	@Autowired
@@ -65,9 +66,9 @@ public class DocumentoControle {
 	public ResponseEntity<?> cadastrarDocumento(@RequestBody Documento documento, @PathVariable long id) {
 		HttpStatus status = HttpStatus.CONFLICT;
 		if (documento.getId() == null) {
-			Cliente cliente = repositorioCliente.getById(id);
-			cliente.getDocumentos().add(documento);
-			repositorioCliente.save(cliente);
+			Usuario usuario = repositorioUsuario.getById(id);
+			usuario.getDocumentos().add(documento);
+			repositorioUsuario.save(usuario);
 			status = HttpStatus.CREATED;
 		}
 		return new ResponseEntity<>(status);
@@ -93,16 +94,16 @@ public class DocumentoControle {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Documento documento = repositorioDocumento.getById(exclusao.getId());
 		if (documento != null) {
-			Cliente cliente = repositorioCliente.getById(id);
-			List<Documento> documentosCliente = cliente.getDocumentos();
-			for (Documento doc : documentosCliente) {
+			Usuario usuario = repositorioUsuario.getById(id);
+			Set<Documento> documentosUsuario = usuario.getDocumentos();
+			for (Documento doc : documentosUsuario) {
 		        if (doc.getId() == exclusao.getId()) {
-		            documentosCliente.remove(doc);
+		            documentosUsuario.remove(doc);
 		            break;
 		        }
 		    }
-		    cliente.setDocumentos(documentosCliente);
-			repositorioCliente.save(cliente);
+		    usuario.setDocumentos(documentosUsuario);
+			repositorioUsuario.save(usuario);
 			status = HttpStatus.OK;
 		}
 		return new ResponseEntity<>(status);
