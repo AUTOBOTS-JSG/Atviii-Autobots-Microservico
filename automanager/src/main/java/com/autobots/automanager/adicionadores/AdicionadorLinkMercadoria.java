@@ -7,89 +7,91 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.autobots.automanager.controles.EmailControle;
+import com.autobots.automanager.controles.MercadoriaControle;
 import com.autobots.automanager.entitades.Email;
+import com.autobots.automanager.entitades.Mercadoria;
 
 @Component
-public class AdicionadorLinkMercadoria implements AdicionadorLink<Email> {
+public class AdicionadorLinkMercadoria implements AdicionadorLink<Mercadoria> {
 
 	@Override
-	public void adicionarLink(List<Email> lista) {
-		for (Email email : lista) {
-			long id = email.getId();
-			Link linkProprioObterEmail = WebMvcLinkBuilder
+	public void adicionarLink(List<Mercadoria> lista) {
+		for (Mercadoria mercadoria : lista) {
+			long id = mercadoria.getId();
+			Link linkProprioObterMercadoria = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
-							.methodOn(EmailControle.class)
-							.obterEmail(id))
+							.methodOn(MercadoriaControle.class)
+							.obterMercadoria(id))
 					.withSelfRel();
-			email.add(linkProprioObterEmail);
+			mercadoria.add(linkProprioObterMercadoria);
 			
-			Link linkProprioObterEmails = WebMvcLinkBuilder
+			Link linkProprioObterMercadorias = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
-							.methodOn(EmailControle.class)
-							.obterEmails())
+							.methodOn(MercadoriaControle.class)
+							.obterMercadorias())
 					.withSelfRel();
-			email.add(linkProprioObterEmails);
+			mercadoria.add(linkProprioObterMercadorias);
 			
-			Link linkProprioCadastrarEmail = WebMvcLinkBuilder
+			Link linkProprioCadastrarMercadoria = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
-							.methodOn(EmailControle.class)
-							.cadastrarEmail(email, id))
+							.methodOn(MercadoriaControle.class)
+							.cadastrarMercadoria(mercadoria, id))
 					.withSelfRel();
-			email.add(linkProprioCadastrarEmail);
+			mercadoria.add(linkProprioCadastrarMercadoria);
 			
-			Link linkProprioAtualizarEmail = WebMvcLinkBuilder
+			Link linkProprioAtualizarMercadoria = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
-							.methodOn(EmailControle.class)
-							.atualizarEmail(email))
+							.methodOn(MercadoriaControle.class)
+							.atualizarMercadoria(mercadoria))
 					.withSelfRel();
-			email.add(linkProprioAtualizarEmail);
+			mercadoria.add(linkProprioAtualizarMercadoria);
 			
-			Link linkProprioExcluirEmail = WebMvcLinkBuilder
+			Link linkProprioExcluirMercadoria = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
-							.methodOn(EmailControle.class)
-							.excluirEmail(email, id))
+							.methodOn(MercadoriaControle.class)
+							.excluirMercadoria(mercadoria, id))
 					.withSelfRel();
-			email.add(linkProprioExcluirEmail);	
+			mercadoria.add(linkProprioExcluirMercadoria);	
 			
 		}
 	}
 
 	@Override
-	public void adicionarLink(Email objeto) {
-		Link linkProprioObterEmail = WebMvcLinkBuilder
+	public void adicionarLink(Mercadoria objeto) {
+		Link linkProprioObterMercadoria = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
-						.methodOn(EmailControle.class)
-						.obterEmail(objeto.getId()))
-				.withRel("email");
-		objeto.add(linkProprioObterEmail);
+						.methodOn(MercadoriaControle.class)
+						.obterMercadoria(objeto.getId()))
+				.withRel("mercadoria");
+		objeto.add(linkProprioObterMercadoria);
 		
-		Link linkProprioObterEmails = WebMvcLinkBuilder
+		Link linkProprioObterMercadorias = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
-						.methodOn(EmailControle.class)
-						.obterEmails())
-				.withRel("emails");
-		objeto.add(linkProprioObterEmails);
+						.methodOn(MercadoriaControle.class)
+						.obterMercadorias())
+				.withRel("mercadorias");
+		objeto.add(linkProprioObterMercadorias);
 		
-		Link linkProprioCadastrarEmail = WebMvcLinkBuilder
+		Link linkProprioCadastrarMercadoria = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
-						.methodOn(EmailControle.class)
-						.cadastrarEmail(objeto, id))
+						.methodOn(MercadoriaControle.class)
+						.cadastrarMercadoria(objeto, id))
 				.withRel("cadastrar");
-		objeto.add(linkProprioCadastrarEmail);
+		objeto.add(linkProprioCadastrarMercadoria);
 		
-		Link linkProprioAtualizarEmail = WebMvcLinkBuilder
+		Link linkProprioAtualizarMercadoria = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
-						.methodOn(EmailControle.class)
-						.atualizarEmail(objeto))
+						.methodOn(MercadoriaControle.class)
+						.atualizarMercadoria(objeto))
 				.withRel("atualizar");
-		objeto.add(linkProprioAtualizarEmail);
+		objeto.add(linkProprioAtualizarMercadoria);
 		
-		Link linkProprioExcluirEmail = WebMvcLinkBuilder
+		Link linkProprioExcluirMercadoria = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(EmailControle.class)
 						.excluirEmail(objeto, id))
 				.withRel("excluir");
-		objeto.add(linkProprioExcluirEmail);
+		objeto.add(linkProprioExcluirMercadoria);
 		
 	}
 }

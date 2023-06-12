@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.autobots.automanager.adicionadores.AdicionadorLinkVeiculo;
 import com.autobots.automanager.atualizadores.VeiculoAtualizador;
-import com.autobots.automanager.entitades.Empresa;
-import com.autobots.automanager.entitades.Servico;
 import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.entitades.Veiculo;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
@@ -34,7 +33,7 @@ public class VeiculoControle {
 	@Autowired
 	private VeiculoSelecionador selecionadorVeiculo;
 	@Autowired
-	private AdicionadorLinkVeiculo adicionadorLinkServico;
+	private AdicionadorLinkVeiculo adicionadorLinkVeiculo;
 
 	@GetMapping("/veiculo/{id}")
 	public ResponseEntity<Veiculo> obterVeiculo(@PathVariable long id) {
@@ -93,7 +92,7 @@ public class VeiculoControle {
 	}
 
 	@DeleteMapping("/excluir/{id}")
-	public ResponseEntity<?> excluirServico(@RequestBody Servico exclusao, @PathVariable long id) {
+	public ResponseEntity<?> excluirVeiculo(@RequestBody Veiculo exclusao, @PathVariable long id) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Veiculo veiculo = repositorioVeiculo.getById(exclusao.getId());
 		if (veiculo != null) {

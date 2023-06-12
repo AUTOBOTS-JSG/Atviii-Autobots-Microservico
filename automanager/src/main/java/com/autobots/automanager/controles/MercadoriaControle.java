@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.autobots.automanager.adicionadores.AdicionadorLinkMercadoria;
 import com.autobots.automanager.atualizadores.MercadoriaAtualizador;
 import com.autobots.automanager.entitades.Empresa;
 import com.autobots.automanager.entitades.Mercadoria;
