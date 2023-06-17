@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 
 import com.autobots.automanager.controles.VeiculoControle;
 import com.autobots.automanager.controles.VendaControle;
+import com.autobots.automanager.entitades.Email;
+import com.autobots.automanager.entitades.Empresa;
+import com.autobots.automanager.entitades.Mercadoria;
+import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.entitades.Venda;
 
 @Component
@@ -30,27 +34,13 @@ public class AdicionadorLinkVenda implements AdicionadorLink<Venda> {
 							.obterVendas())
 					.withSelfRel();
 			venda.add(linkProprioObterVendas);
-			
-			Link linkProprioCadastrarVenda = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(VendaControle.class)
-							.cadastrarVenda(venda, id))
-					.withSelfRel();
-			venda.add(linkProprioCadastrarVenda);
-			
+
 			Link linkProprioAtualizarVenda = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
 							.methodOn(VendaControle.class)
 							.atualizarVenda(venda))
 					.withSelfRel();
 			venda.add(linkProprioAtualizarVenda);
-			
-			Link linkProprioExcluirVenda = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(VendaControle.class)
-							.excluirVenda(venda, id))
-					.withSelfRel();
-			venda.add(linkProprioExcluirVenda);	
 			
 		}
 	}
@@ -68,15 +58,8 @@ public class AdicionadorLinkVenda implements AdicionadorLink<Venda> {
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(VendaControle.class)
 						.obterVendas())
-				.withRel("veiculos");
+				.withRel("venda");
 		objeto.add(linkProprioObterVendas);
-		
-		Link linkProprioCadastrarVenda = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(VendaControle.class)
-						.cadastrarVenda(objeto, id))
-				.withRel("cadastrar");
-		objeto.add(linkProprioCadastrarVenda);
 		
 		Link linkProprioAtualizarVenda = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
@@ -85,12 +68,31 @@ public class AdicionadorLinkVenda implements AdicionadorLink<Venda> {
 				.withRel("atualizar");
 		objeto.add(linkProprioAtualizarVenda);
 		
+	
+		
+	}
+	
+	@Override
+	public void adicionarLink(Venda objeto, Empresa empresa) {
 		Link linkProprioExcluirVenda = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(VendaControle.class)
-						.excluirVeiculo(objeto, id))
+						.excluirVenda(objeto, empresa.getId()))
 				.withRel("excluir");
 		objeto.add(linkProprioExcluirVenda);
+		
+	}
+
+	@Override
+	public void adicionarLink(Venda objeto, Usuario usuario) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void adicionarLink(Venda objeto, Mercadoria mercadoria) {
+		// TODO Auto-generated method stub
 		
 	}
 }

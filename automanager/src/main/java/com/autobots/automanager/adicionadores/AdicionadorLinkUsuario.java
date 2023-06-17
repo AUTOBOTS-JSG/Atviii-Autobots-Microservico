@@ -7,6 +7,9 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.autobots.automanager.controles.UsuarioControle;
+import com.autobots.automanager.entitades.Email;
+import com.autobots.automanager.entitades.Empresa;
+import com.autobots.automanager.entitades.Mercadoria;
 import com.autobots.automanager.entitades.Usuario;
 
 @Component
@@ -29,28 +32,13 @@ public class AdicionadorLinkUsuario implements AdicionadorLink<Usuario> {
 							.obterUsuarios())
 					.withSelfRel();
 			usuario.add(linkProprioObterUsuarios);
-			
-			Link linkProprioCadastrarUsuario = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(UsuarioControle.class)
-							.cadastrarUsuario(usuario, id))
-					.withSelfRel();
-			usuario.add(linkProprioCadastrarUsuario);
-			
-			Link linkProprioAtualizarUsuario = WebMvcLinkBuilder
+					
+			Link linkProprioAtualizarCliente = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
 							.methodOn(UsuarioControle.class)
 							.atualizarUsuario(usuario))
 					.withSelfRel();
-			usuario.add(linkProprioAtualizarUsuario);
-			
-			Link linkProprioExcluirUsuario = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(UsuarioControle.class)
-							.excluirUsuario(usuario, id))
-					.withSelfRel();
-			usuario.add(linkProprioExcluirUsuario);	
-			
+			usuario.add(linkProprioAtualizarCliente);			
 		}
 	}
 
@@ -70,26 +58,34 @@ public class AdicionadorLinkUsuario implements AdicionadorLink<Usuario> {
 				.withRel("usuarios");
 		objeto.add(linkProprioObterUsuarios);
 		
-		Link linkProprioCadastrarUsuario = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(UsuarioControle.class)
-						.cadastrarUsuario(objeto, id))
-				.withRel("cadastrar");
-		objeto.add(linkProprioCadastrarUsuario);
-		
 		Link linkProprioAtualizarUsuario = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(UsuarioControle.class)
 						.atualizarUsuario(objeto))
 				.withRel("atualizar");
 		objeto.add(linkProprioAtualizarUsuario);
-		
+	}
+
+	@Override
+	public void adicionarLink(Usuario objeto, Empresa empresa) {
 		Link linkProprioExcluirUsuario = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(UsuarioControle.class)
-						.excluirUsuario(objeto, id))
-				.withRel("excluir");
+			.linkTo(WebMvcLinkBuilder
+				.methodOn(UsuarioControle.class)
+				.excluirUsuario(objeto, empresa.getId()))
+			.withRel("excluir");
 		objeto.add(linkProprioExcluirUsuario);
+	}
+
+	@Override
+	public void adicionarLink(Usuario objeto, Usuario usuario) {
+		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void adicionarLink(Usuario objeto, Mercadoria mercadoria) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

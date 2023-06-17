@@ -21,6 +21,7 @@ import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.repositorios.EnderecoRepositorio;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
 import com.autobots.automanager.selecionadores.EnderecoSelecionador;
+import com.autobots.automanager.selecionadores.UsuarioEnderecoSelecionador;
 
 @RestController
 @RequestMapping("/endereco")
@@ -31,6 +32,8 @@ public class EnderecoControle {
 	private UsuarioRepositorio repositorioUsuario;
 	@Autowired
 	private EnderecoSelecionador selecionadorEndereco;
+	@Autowired
+	private UsuarioEnderecoSelecionador selecionadorUsuEndereco;
 	@Autowired
 	private AdicionadorLinkEndereco adicionadorLinkEndereco;
 	
@@ -43,6 +46,9 @@ public class EnderecoControle {
 			return resposta;
 		} else {
 			adicionadorLinkEndereco.adicionarLink(endereco);
+			List<Usuario> usuarios = repositorioUsuario.findAll();
+			Usuario usuario = selecionadorUsuEndereco.selecionar(usuarios, endereco);
+			adicionadorLinkEndereco.adicionarLink(endereco, usuario);
 			ResponseEntity<Endereco> resposta = new ResponseEntity<Endereco>(endereco, HttpStatus.FOUND);
 			return resposta;
 		}

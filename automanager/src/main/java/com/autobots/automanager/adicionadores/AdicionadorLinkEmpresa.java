@@ -7,7 +7,10 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.autobots.automanager.controles.EmpresaControle;
+import com.autobots.automanager.entitades.Email;
 import com.autobots.automanager.entitades.Empresa;
+import com.autobots.automanager.entitades.Mercadoria;
+import com.autobots.automanager.entitades.Usuario;
 
 @Component
 public class AdicionadorLinkEmpresa implements AdicionadorLink<Empresa> {
@@ -29,27 +32,13 @@ public class AdicionadorLinkEmpresa implements AdicionadorLink<Empresa> {
 							.obterEmpresas())
 					.withSelfRel();
 			empresa.add(linkProprioObterEmpresas);
-			
-			Link linkProprioCadastrarEmpresa = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(EmpresaControle.class)
-							.cadastrarEmpresa(empresa))
-					.withSelfRel();
-			empresa.add(linkProprioCadastrarEmpresa);
-			
+					
 			Link linkProprioAtualizarEmpresa = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
 							.methodOn(EmpresaControle.class)
 							.atualizarEmpresa(empresa))
 					.withSelfRel();
 			empresa.add(linkProprioAtualizarEmpresa);
-			
-			Link linkProprioExcluirEmpresa = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(EmpresaControle.class)
-							.excluirEmpresa(empresa))
-					.withSelfRel();
-			empresa.add(linkProprioExcluirEmpresa);	
 			
 		}
 	}
@@ -70,13 +59,6 @@ public class AdicionadorLinkEmpresa implements AdicionadorLink<Empresa> {
 				.withRel("empresas");
 		objeto.add(linkProprioObterEmpresas);
 		
-		Link linkProprioCadastrarEmpresa = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(EmpresaControle.class)
-						.cadastrarEmpresa(objeto))
-				.withRel("cadastrar");
-		objeto.add(linkProprioCadastrarEmpresa);
-		
 		Link linkProprioAtualizarEmpresa = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(EmpresaControle.class)
@@ -92,4 +74,25 @@ public class AdicionadorLinkEmpresa implements AdicionadorLink<Empresa> {
 		objeto.add(linkProprioExcluirEmpresa);
 		
 	}
+
+	@Override
+	public void adicionarLink(Empresa objeto, Usuario usuario) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void adicionarLink(Empresa objeto, Empresa empresa) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void adicionarLink(Empresa objeto, Mercadoria mercadoria) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 }

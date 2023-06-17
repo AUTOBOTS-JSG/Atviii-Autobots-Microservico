@@ -7,7 +7,11 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.autobots.automanager.controles.EnderecoControle;
+import com.autobots.automanager.entitades.Email;
+import com.autobots.automanager.entitades.Empresa;
 import com.autobots.automanager.entitades.Endereco;
+import com.autobots.automanager.entitades.Mercadoria;
+import com.autobots.automanager.entitades.Usuario;
 
 @Component
 public class AdicionadorLinkEndereco implements AdicionadorLink<Endereco> {
@@ -30,26 +34,12 @@ public class AdicionadorLinkEndereco implements AdicionadorLink<Endereco> {
 					.withSelfRel();
 			endereco.add(linkProprioObterEnderecos);
 			
-			Link linkProprioCadastrarEndereco = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(EnderecoControle.class)
-							.cadastrarEndereco(endereco, id))
-					.withSelfRel();
-			endereco.add(linkProprioCadastrarEndereco);
-			
 			Link linkProprioAtualizarEndereco = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
 							.methodOn(EnderecoControle.class)
 							.atualizarEndereco(endereco))
 					.withSelfRel();
-			endereco.add(linkProprioAtualizarEndereco);
-			
-			Link linkProprioExcluirEndereco = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(EnderecoControle.class)
-							.excluirEndereco(id))
-					.withSelfRel();
-			endereco.add(linkProprioExcluirEndereco);	
+			endereco.add(linkProprioAtualizarEndereco);	
 			
 		}
 	}
@@ -70,26 +60,35 @@ public class AdicionadorLinkEndereco implements AdicionadorLink<Endereco> {
 				.withRel("enderecos");
 		objeto.add(linkProprioObterEnderecos);
 		
-		Link linkProprioCadastrarEndereco = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(EnderecoControle.class)
-						.cadastrarEndereco(objeto, id))
-				.withRel("cadastrarEndereco");
-		objeto.add(linkProprioCadastrarEndereco);
-		
 		Link linkProprioAtualizarEndereco = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(EnderecoControle.class)
 						.atualizarEndereco(objeto))
 				.withRel("atualizarEndereco");
 		objeto.add(linkProprioAtualizarEndereco);
-		
+	}
+	
+	@Override
+	public void adicionarLink(Endereco objeto, Usuario usuario) {
 		Link linkProprioExcluirEndereco = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(EnderecoControle.class)
-						.excluirEndereco(objeto, id))
+						.excluirEndereco(usuario.getId()))
 				.withRel("excluirEndereco");
 		objeto.add(linkProprioExcluirEndereco);
 		
 	}
+
+	@Override
+	public void adicionarLink(Endereco objeto, Empresa empresa) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void adicionarLink(Endereco objeto, Mercadoria mercadoria) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

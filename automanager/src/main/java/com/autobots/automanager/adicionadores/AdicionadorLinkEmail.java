@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import com.autobots.automanager.controles.EmailControle;
 import com.autobots.automanager.entitades.Email;
+import com.autobots.automanager.entitades.Empresa;
+import com.autobots.automanager.entitades.Mercadoria;
+import com.autobots.automanager.entitades.Usuario;
 
 @Component
 public class AdicionadorLinkEmail implements AdicionadorLink<Email> {
@@ -29,14 +32,7 @@ public class AdicionadorLinkEmail implements AdicionadorLink<Email> {
 							.obterEmails())
 					.withSelfRel();
 			email.add(linkProprioObterEmails);
-			
-			Link linkProprioCadastrarEmail = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(EmailControle.class)
-							.cadastrarEmail(email, id))
-					.withSelfRel();
-			email.add(linkProprioCadastrarEmail);
-			
+					
 			Link linkProprioAtualizarEmail = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
 							.methodOn(EmailControle.class)
@@ -44,16 +40,9 @@ public class AdicionadorLinkEmail implements AdicionadorLink<Email> {
 					.withSelfRel();
 			email.add(linkProprioAtualizarEmail);
 			
-			Link linkProprioExcluirEmail = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(EmailControle.class)
-							.excluirEmail(email, id))
-					.withSelfRel();
-			email.add(linkProprioExcluirEmail);	
-			
 		}
 	}
-
+	
 	@Override
 	public void adicionarLink(Email objeto) {
 		Link linkProprioObterEmail = WebMvcLinkBuilder
@@ -70,26 +59,35 @@ public class AdicionadorLinkEmail implements AdicionadorLink<Email> {
 				.withRel("emails");
 		objeto.add(linkProprioObterEmails);
 		
-		Link linkProprioCadastrarEmail = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(EmailControle.class)
-						.cadastrarEmail(objeto, id))
-				.withRel("cadastrar");
-		objeto.add(linkProprioCadastrarEmail);
-		
 		Link linkProprioAtualizarEmail = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(EmailControle.class)
 						.atualizarEmail(objeto))
-				.withRel("atualizar");
+				.withRel("atualizarTelefone");
 		objeto.add(linkProprioAtualizarEmail);
 		
+	}
+	
+	
+	@Override
+	public void adicionarLink(Email objeto, Usuario usuario) {
 		Link linkProprioExcluirEmail = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(EmailControle.class)
-						.excluirEmail(objeto, id))
-				.withRel("excluir");
+						.excluirEmail(objeto, usuario.getId()))
+				.withRel("excluirTelefone");
 		objeto.add(linkProprioExcluirEmail);
 		
 	}
+
+	@Override
+	public void adicionarLink(Email objeto, Empresa empresa) {
+	}
+
+	
+
+	@Override
+	public void adicionarLink(Email objeto, Mercadoria mercadoria) {		
+	}
+
 }

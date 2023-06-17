@@ -6,8 +6,13 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import com.autobots.automanager.controles.MercadoriaControle;
 import com.autobots.automanager.controles.ServicoControle;
+import com.autobots.automanager.entitades.Email;
+import com.autobots.automanager.entitades.Empresa;
+import com.autobots.automanager.entitades.Mercadoria;
 import com.autobots.automanager.entitades.Servico;
+import com.autobots.automanager.entitades.Usuario;
 
 @Component
 public class AdicionadorLinkServico implements AdicionadorLink<Servico> {
@@ -29,27 +34,13 @@ public class AdicionadorLinkServico implements AdicionadorLink<Servico> {
 							.obterServicos())
 					.withSelfRel();
 			servico.add(linkProprioObterServicos);
-			
-			Link linkProprioCadastrarServico = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(ServicoControle.class)
-							.cadastrarServico(servico, id))
-					.withSelfRel();
-			servico.add(linkProprioCadastrarServico);
-			
+
 			Link linkProprioAtualizarServico = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
 							.methodOn(ServicoControle.class)
 							.atualizarServico(servico))
 					.withSelfRel();
 			servico.add(linkProprioAtualizarServico);
-			
-			Link linkProprioExcluirServico = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(ServicoControle.class)
-							.excluirServico(servico, id))
-					.withSelfRel();
-			servico.add(linkProprioExcluirServico);	
 			
 		}
 	}
@@ -69,14 +60,7 @@ public class AdicionadorLinkServico implements AdicionadorLink<Servico> {
 						.obterServicos())
 				.withRel("servicos");
 		objeto.add(linkProprioObterServicos);
-		
-		Link linkProprioCadastrarServico = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(ServicoControle.class)
-						.cadastrarServico(objeto, id))
-				.withRel("cadastrar");
-		objeto.add(linkProprioCadastrarServico);
-		
+			
 		Link linkProprioAtualizarServico = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(ServicoControle.class)
@@ -84,12 +68,28 @@ public class AdicionadorLinkServico implements AdicionadorLink<Servico> {
 				.withRel("atualizar");
 		objeto.add(linkProprioAtualizarServico);
 		
+	}
+	
+	@Override
+	public void adicionarLink(Servico objeto, Empresa empresa) {
 		Link linkProprioExcluirServico = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(ServicoControle.class)
-						.excluirServico(objeto, id))
-				.withRel("excluir");
+						.excluirServico(objeto, empresa.getId()))
+				.withRel("excluirServico");
 		objeto.add(linkProprioExcluirServico);
+		
+	}
+
+	@Override
+	public void adicionarLink(Servico objeto, Usuario usuario) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void adicionarLink(Servico objeto, Mercadoria mercadoria) {
+		// TODO Auto-generated method stub
 		
 	}
 }

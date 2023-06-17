@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.autobots.automanager.adicionadores.AdicionadorLinkEmail;
 import com.autobots.automanager.atualizadores.EmailAtualizador;
+import com.autobots.automanager.entitades.Documento;
 import com.autobots.automanager.entitades.Email;
 import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.repositorios.EmailRepositorio;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
 import com.autobots.automanager.selecionadores.EmailSelecionador;
+import com.autobots.automanager.selecionadores.UsuarioEmailSelecionador;
 
 @RestController
 @RequestMapping("/email")
@@ -32,6 +34,8 @@ public class EmailControle {
 	private UsuarioRepositorio repositorioUsuario;
 	@Autowired
 	private EmailSelecionador selecionadorEmail;
+	@Autowired
+	private UsuarioEmailSelecionador selecionadorUsuEmail;
 	@Autowired
 	private AdicionadorLinkEmail adicionadorLinkEmail;
 
@@ -44,6 +48,11 @@ public class EmailControle {
 			return resposta;
 		} else {
 			adicionadorLinkEmail.adicionarLink(email);
+			List<Usuario> usuarios = repositorioUsuario.findAll();
+			for (Email e : emails) {
+				Usuario usuario = selecionadorUsuEmail.selecionar(usuarios, email);
+				adicionadorLinkEmail.adicionarLink(e, usuario);
+			}
 			ResponseEntity<Email> resposta = new ResponseEntity<Email>(email, HttpStatus.FOUND);
 			return resposta;
 		} 
@@ -57,6 +66,11 @@ public class EmailControle {
 			return resposta;
 		} else {
 			adicionadorLinkEmail.adicionarLink(emails);
+			List<Usuario> usuarios = repositorioUsuario.findAll();
+			for (Email email : emails) {
+				Usuario usuario = selecionadorUsuEmail.selecionar(usuarios, email);
+				adicionadorLinkEmail.adicionarLink(email, usuario);
+			}
 			ResponseEntity<List<Email>> resposta = new ResponseEntity<>(emails, HttpStatus.FOUND);
 			return resposta;
 		}

@@ -22,6 +22,7 @@ import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.repositorios.DocumentoRepositorio;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
 import com.autobots.automanager.selecionadores.DocumentoSelecionador;
+import com.autobots.automanager.selecionadores.UsuarioDocumentoSelecionador;
 
 @RestController
 @RequestMapping("/documento")
@@ -32,6 +33,8 @@ public class DocumentoControle {
 	private UsuarioRepositorio repositorioUsuario;
 	@Autowired
 	private DocumentoSelecionador selecionadorDocumento;
+	@Autowired
+	private UsuarioDocumentoSelecionador selecionadorUsuDocumento;
 	@Autowired
 	private AdicionadorLinkDocumento adicionadorLinkDocumento;
 
@@ -44,6 +47,11 @@ public class DocumentoControle {
 			return resposta;
 		} else {
 			adicionadorLinkDocumento.adicionarLink(documento);
+			List<Usuario> usuarios = repositorioUsuario.findAll();
+			for (Documento doc : documentos) {
+				Usuario usuario = selecionadorUsuDocumento.selecionar(usuarios, documento);
+				adicionadorLinkDocumento.adicionarLink(doc, usuario);
+			}
 			ResponseEntity<Documento> resposta = new ResponseEntity<Documento>(documento, HttpStatus.FOUND);
 			return resposta;
 		}
@@ -57,6 +65,11 @@ public class DocumentoControle {
 			return resposta;
 		} else {
 			adicionadorLinkDocumento.adicionarLink(documentos);
+			List<Usuario> usuarios = repositorioUsuario.findAll();
+			for (Documento doc : documentos) {
+				Usuario usuario = selecionadorUsuDocumento.selecionar(usuarios, doc);
+				adicionadorLinkDocumento.adicionarLink(doc, usuario);
+			}
 			ResponseEntity<List<Documento>> resposta = new ResponseEntity<>(documentos, HttpStatus.FOUND);
 			return resposta;
 		}

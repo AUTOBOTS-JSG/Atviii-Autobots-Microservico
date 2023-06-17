@@ -21,6 +21,7 @@ import com.autobots.automanager.entitades.Empresa;
 import com.autobots.automanager.entitades.Venda;
 import com.autobots.automanager.repositorios.RepositorioEmpresa;
 import com.autobots.automanager.repositorios.VendaRepositorio;
+import com.autobots.automanager.selecionadores.EmpresaVendaSelecionador;
 import com.autobots.automanager.selecionadores.VendaSelecionador;
 
 @RestController
@@ -33,6 +34,8 @@ public class VendaControle {
 	@Autowired
 	private VendaSelecionador selecionadorVenda;
 	@Autowired
+	private EmpresaVendaSelecionador selecionadorEmpVenda;
+	@Autowired
 	private AdicionadorLinkVenda adicionadorLinkVenda;
 
 	@GetMapping("/venda/{id}")
@@ -44,6 +47,11 @@ public class VendaControle {
 			return resposta;
 		} else {
 			adicionadorLinkVenda.adicionarLink(venda);
+			List<Empresa> empresas = repositorioEmpresa.findAll();
+			for (Venda vend : vendas) {
+				Empresa empresa = selecionadorEmpVenda.selecionar(empresas, venda);
+				adicionadorLinkVenda.adicionarLink(vend, empresa);
+			}
 			ResponseEntity<Venda> resposta = new ResponseEntity<Venda>(venda, HttpStatus.FOUND);
 			return resposta;
 		} 
@@ -57,6 +65,11 @@ public class VendaControle {
 			return resposta;
 		} else {
 			adicionadorLinkVenda.adicionarLink(vendas);
+			List<Empresa> empresas = repositorioEmpresa.findAll();
+			for (Venda venda : vendas) {
+				Empresa empresa = selecionadorEmpVenda.selecionar(empresas, venda);
+				adicionadorLinkVenda.adicionarLink(venda, empresa);
+			}
 			ResponseEntity<List<Venda>> resposta = new ResponseEntity<>(vendas, HttpStatus.FOUND);
 			return resposta;
 		}

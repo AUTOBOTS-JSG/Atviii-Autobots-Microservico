@@ -7,6 +7,10 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.autobots.automanager.controles.VeiculoControle;
+import com.autobots.automanager.entitades.Email;
+import com.autobots.automanager.entitades.Empresa;
+import com.autobots.automanager.entitades.Mercadoria;
+import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.entitades.Veiculo;
 
 @Component
@@ -29,28 +33,13 @@ public class AdicionadorLinkVeiculo implements AdicionadorLink<Veiculo> {
 							.obterVeiculos())
 					.withSelfRel();
 			veiculo.add(linkProprioObterVeiculos);
-			
-			Link linkProprioCadastrarVeiculo = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(VeiculoControle.class)
-							.cadastrarVeiculo(veiculo, id))
-					.withSelfRel();
-			veiculo.add(linkProprioCadastrarVeiculo);
-			
+					
 			Link linkProprioAtualizarVeiculo = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
 							.methodOn(VeiculoControle.class)
 							.atualizarVeiculo(veiculo))
 					.withSelfRel();
-			veiculo.add(linkProprioAtualizarVeiculo);
-			
-			Link linkProprioExcluirVeiculo = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(VeiculoControle.class)
-							.excluirVeiculo(veiculo, id))
-					.withSelfRel();
-			veiculo.add(linkProprioExcluirVeiculo);	
-			
+			veiculo.add(linkProprioAtualizarVeiculo);			
 		}
 	}
 
@@ -69,27 +58,39 @@ public class AdicionadorLinkVeiculo implements AdicionadorLink<Veiculo> {
 						.obterVeiculos())
 				.withRel("veiculos");
 		objeto.add(linkProprioObterVeiculos);
-		
-		Link linkProprioCadastrarVeiculo = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(VeiculoControle.class)
-						.cadastrarVeiculo(objeto, id))
-				.withRel("cadastrar");
-		objeto.add(linkProprioCadastrarVeiculo);
-		
+				
 		Link linkProprioAtualizarVeiculo = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(VeiculoControle.class)
 						.atualizarVeiculo(objeto))
-				.withRel("atualizar");
+				.withRel("atualizarVeiculo");
 		objeto.add(linkProprioAtualizarVeiculo);
 		
+	}
+	
+	@Override
+	public void adicionarLink(Veiculo objeto, Usuario usuario) {
 		Link linkProprioExcluirVeiculo = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(VeiculoControle.class)
-						.excluirVeiculo(objeto, id))
-				.withRel("excluir");
+						.excluirVeiculo(objeto, usuario.getId()))
+				.withRel("excluirVeiculo");
 		objeto.add(linkProprioExcluirVeiculo);
 		
 	}
+
+	@Override
+	public void adicionarLink(Veiculo objeto, Empresa empresa) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void adicionarLink(Veiculo objeto, Mercadoria mercadoria) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 }

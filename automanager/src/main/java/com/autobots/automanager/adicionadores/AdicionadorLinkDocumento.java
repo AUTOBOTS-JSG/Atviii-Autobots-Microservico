@@ -7,7 +7,11 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.autobots.automanager.controles.DocumentoControle;
+import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.entitades.Documento;
+import com.autobots.automanager.entitades.Email;
+import com.autobots.automanager.entitades.Empresa;
+import com.autobots.automanager.entitades.Mercadoria;
 
 @Component
 public class AdicionadorLinkDocumento implements AdicionadorLink<Documento> {
@@ -29,28 +33,13 @@ public class AdicionadorLinkDocumento implements AdicionadorLink<Documento> {
 							.obterDocumentos())
 					.withSelfRel();
 			documento.add(linkProprioObterDocumentos);
-			
-			Link linkProprioCadastrarDocumento = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(DocumentoControle.class)
-							.cadastrarDocumento(documento, id))
-					.withSelfRel();
-			documento.add(linkProprioCadastrarDocumento);
-			
+					
 			Link linkProprioAtualizarDocumento = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
 							.methodOn(DocumentoControle.class)
 							.atualizarDocumento(documento))
 					.withSelfRel();
-			documento.add(linkProprioAtualizarDocumento);
-			
-			Link linkProprioExcluirDocumento = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(DocumentoControle.class)
-							.excluirDocumento(documento, id))
-					.withSelfRel();
-			documento.add(linkProprioExcluirDocumento);	
-			
+			documento.add(linkProprioAtualizarDocumento);			
 		}
 	}
 
@@ -69,14 +58,7 @@ public class AdicionadorLinkDocumento implements AdicionadorLink<Documento> {
 						.obterDocumentos())
 				.withRel("documentos");
 		objeto.add(linkProprioObterDocumentos);
-		
-		Link linkProprioCadastrarDocumento = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(DocumentoControle.class)
-						.cadastrarDocumento(objeto, id))
-				.withRel("cadastrarDocumento");
-		objeto.add(linkProprioCadastrarDocumento);
-		
+				
 		Link linkProprioAtualizarDocumento = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(DocumentoControle.class)
@@ -84,12 +66,29 @@ public class AdicionadorLinkDocumento implements AdicionadorLink<Documento> {
 				.withRel("atualizarDocumento");
 		objeto.add(linkProprioAtualizarDocumento);
 		
+	}
+	
+	@Override
+	public void adicionarLink(Documento objeto, Usuario usuario) {
 		Link linkProprioExcluirDocumento = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(DocumentoControle.class)
-						.excluirDocumento(objeto, id))
+						.excluirDocumento(objeto, usuario.getId()))
 				.withRel("excluirDocumento");
 		objeto.add(linkProprioExcluirDocumento);
 		
 	}
+
+	@Override
+	public void adicionarLink(Documento objeto, Empresa empresa) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void adicionarLink(Documento objeto, Mercadoria mercadoria) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -21,6 +21,7 @@ import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.entitades.Veiculo;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
 import com.autobots.automanager.repositorios.VeiculoRepositorio;
+import com.autobots.automanager.selecionadores.UsuarioVeiculoSelecionador;
 import com.autobots.automanager.selecionadores.VeiculoSelecionador;
 
 @RestController
@@ -33,6 +34,8 @@ public class VeiculoControle {
 	@Autowired
 	private VeiculoSelecionador selecionadorVeiculo;
 	@Autowired
+	private UsuarioVeiculoSelecionador selecionadorUsuVeiculo;
+	@Autowired
 	private AdicionadorLinkVeiculo adicionadorLinkVeiculo;
 
 	@GetMapping("/veiculo/{id}")
@@ -44,6 +47,11 @@ public class VeiculoControle {
 			return resposta;
 		} else {
 			adicionadorLinkVeiculo.adicionarLink(veiculo);
+			List<Usuario> usuarios = repositorioUsuario.findAll();
+			for (Veiculo vei : veiculos) {
+				Usuario usuario = selecionadorUsuVeiculo.selecionar(usuarios, veiculo);
+				adicionadorLinkVeiculo.adicionarLink(vei, usuario);
+			}
 			ResponseEntity<Veiculo> resposta = new ResponseEntity<Veiculo>(veiculo, HttpStatus.FOUND);
 			return resposta;
 		} 
@@ -57,6 +65,11 @@ public class VeiculoControle {
 			return resposta;
 		} else {
 			adicionadorLinkVeiculo.adicionarLink(veiculos);
+			List<Usuario> usuarios = repositorioUsuario.findAll();
+			for (Veiculo veiculo : veiculos) {
+				Usuario usuario = selecionadorUsuVeiculo.selecionar(usuarios, veiculo);
+				adicionadorLinkVeiculo.adicionarLink(veiculo, usuario);
+			}
 			ResponseEntity<List<Veiculo>> resposta = new ResponseEntity<>(veiculos, HttpStatus.FOUND);
 			return resposta;
 		}

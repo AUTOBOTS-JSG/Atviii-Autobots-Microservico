@@ -21,6 +21,7 @@ import com.autobots.automanager.entitades.Empresa;
 import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.repositorios.RepositorioEmpresa;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
+import com.autobots.automanager.selecionadores.EmpresaUsuarioSelecionador;
 import com.autobots.automanager.selecionadores.UsuarioSelecionador;
 
 @RestController
@@ -30,6 +31,8 @@ public class UsuarioControle {
 	private UsuarioRepositorio repositorioUsuario;
 	@Autowired
 	private UsuarioSelecionador selecionadorUsuario;
+	@Autowired
+	private EmpresaUsuarioSelecionador selecionadorEmpUsuario;
 	@Autowired
 	private RepositorioEmpresa repositorioEmpresa;
 	@Autowired
@@ -44,6 +47,11 @@ public class UsuarioControle {
 			return resposta;
 		} else {
 			adicionadorLink.adicionarLink(usuario);
+			List<Empresa> empresas = repositorioEmpresa.findAll();
+			for (Usuario usu : usuarios) {
+				Empresa empresa = selecionadorEmpUsuario.selecionar(empresas, usu);
+				adicionadorLink.adicionarLink(usu, empresa);
+			}
 			ResponseEntity<Usuario> resposta = new ResponseEntity<Usuario>(usuario, HttpStatus.FOUND);
 			return resposta;
 		}
@@ -57,6 +65,11 @@ public class UsuarioControle {
 			return resposta;
 		} else {
 			adicionadorLink.adicionarLink(usuarios);
+			List<Empresa> empresas = repositorioEmpresa.findAll();
+			for (Usuario usuario : usuarios) {
+				Empresa empresa = selecionadorEmpUsuario.selecionar(empresas, usuario);
+				adicionadorLink.adicionarLink(usuario, empresa);
+			}
 			ResponseEntity<List<Usuario>> resposta = new ResponseEntity<>(usuarios, HttpStatus.FOUND);
 			return resposta;
 		}

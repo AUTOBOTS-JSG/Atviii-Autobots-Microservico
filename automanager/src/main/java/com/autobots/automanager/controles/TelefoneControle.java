@@ -22,6 +22,7 @@ import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.repositorios.TelefoneRepositorio;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
 import com.autobots.automanager.selecionadores.TelefoneSelecionador;
+import com.autobots.automanager.selecionadores.UsuarioTelefoneSelecionador;
 
 @RestController
 @RequestMapping("/telefone")
@@ -32,6 +33,8 @@ public class TelefoneControle {
 	private UsuarioRepositorio repositorioUsuario;
 	@Autowired
 	private TelefoneSelecionador selecionadorTelefone;
+	@Autowired
+	private UsuarioTelefoneSelecionador selecionadorUsuTelefone;
 	@Autowired
 	private AdicionadorLinkTelefone adicionadorLinkTelefone;
 
@@ -44,6 +47,11 @@ public class TelefoneControle {
 			return resposta;
 		} else {
 			adicionadorLinkTelefone.adicionarLink(telefone);
+			List<Usuario> usuarios = repositorioUsuario.findAll();
+			for (Telefone tel : telefones) {
+				Usuario usuario = selecionadorUsuTelefone.selecionar(usuarios, telefone);
+				adicionadorLinkTelefone.adicionarLink(tel, usuario);
+			}
 			ResponseEntity<Telefone> resposta = new ResponseEntity<Telefone>(telefone, HttpStatus.FOUND);
 			return resposta;
 		} 
@@ -57,6 +65,11 @@ public class TelefoneControle {
 			return resposta;
 		} else {
 			adicionadorLinkTelefone.adicionarLink(telefones);
+			List<Usuario> usuarios = repositorioUsuario.findAll();
+			for (Telefone telefone : telefones) {
+				Usuario usuario = selecionadorUsuTelefone.selecionar(usuarios, telefone);
+				adicionadorLinkTelefone.adicionarLink(telefone, usuario);
+			}
 			ResponseEntity<List<Telefone>> resposta = new ResponseEntity<>(telefones, HttpStatus.FOUND);
 			return resposta;
 		}

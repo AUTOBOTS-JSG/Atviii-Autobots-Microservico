@@ -21,6 +21,7 @@ import com.autobots.automanager.entitades.Empresa;
 import com.autobots.automanager.entitades.Mercadoria;
 import com.autobots.automanager.repositorios.MercadoriaRepositorio;
 import com.autobots.automanager.repositorios.RepositorioEmpresa;
+import com.autobots.automanager.selecionadores.EmpresaMercadoriaSelecionador;
 import com.autobots.automanager.selecionadores.MercadoriaSelecionador;
 
 @RestController
@@ -33,6 +34,8 @@ public class MercadoriaControle {
 	@Autowired
 	private MercadoriaSelecionador selecionadorMercadoria;
 	@Autowired
+	private EmpresaMercadoriaSelecionador selecionadorEmpMercadoria;
+	@Autowired
 	private AdicionadorLinkMercadoria adicionadorLinkMercadoria;
 
 	@GetMapping("/mercadoria/{id}")
@@ -44,6 +47,11 @@ public class MercadoriaControle {
 			return resposta;
 		} else {
 			adicionadorLinkMercadoria.adicionarLink(mercadoria);
+			List<Empresa> empresas = repositorioEmpresa.findAll();
+			for (Mercadoria mer : mercadorias) {
+				Empresa empresa = selecionadorEmpMercadoria.selecionar(empresas, mercadoria);
+				adicionadorLinkMercadoria.adicionarLink(mer, empresa);
+			}
 			ResponseEntity<Mercadoria> resposta = new ResponseEntity<Mercadoria>(mercadoria, HttpStatus.FOUND);
 			return resposta;
 		} 
@@ -57,6 +65,11 @@ public class MercadoriaControle {
 			return resposta;
 		} else {
 			adicionadorLinkMercadoria.adicionarLink(mercadorias);
+			List<Empresa> empresas = repositorioEmpresa.findAll();
+			for (Mercadoria mercadoria : mercadorias) {
+				Empresa empresa = selecionadorEmpMercadoria.selecionar(empresas, mercadoria);
+				adicionadorLinkMercadoria.adicionarLink(mercadoria, empresa);
+			}
 			ResponseEntity<List<Mercadoria>> resposta = new ResponseEntity<>(mercadorias, HttpStatus.FOUND);
 			return resposta;
 		}

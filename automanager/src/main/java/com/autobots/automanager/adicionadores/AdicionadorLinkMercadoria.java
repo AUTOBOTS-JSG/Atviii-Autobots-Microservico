@@ -6,10 +6,13 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
-import com.autobots.automanager.controles.EmailControle;
 import com.autobots.automanager.controles.MercadoriaControle;
+import com.autobots.automanager.controles.TelefoneControle;
 import com.autobots.automanager.entitades.Email;
+import com.autobots.automanager.entitades.Empresa;
 import com.autobots.automanager.entitades.Mercadoria;
+import com.autobots.automanager.entitades.Telefone;
+import com.autobots.automanager.entitades.Usuario;
 
 @Component
 public class AdicionadorLinkMercadoria implements AdicionadorLink<Mercadoria> {
@@ -31,14 +34,7 @@ public class AdicionadorLinkMercadoria implements AdicionadorLink<Mercadoria> {
 							.obterMercadorias())
 					.withSelfRel();
 			mercadoria.add(linkProprioObterMercadorias);
-			
-			Link linkProprioCadastrarMercadoria = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(MercadoriaControle.class)
-							.cadastrarMercadoria(mercadoria, id))
-					.withSelfRel();
-			mercadoria.add(linkProprioCadastrarMercadoria);
-			
+					
 			Link linkProprioAtualizarMercadoria = WebMvcLinkBuilder
 					.linkTo(WebMvcLinkBuilder
 							.methodOn(MercadoriaControle.class)
@@ -46,16 +42,9 @@ public class AdicionadorLinkMercadoria implements AdicionadorLink<Mercadoria> {
 					.withSelfRel();
 			mercadoria.add(linkProprioAtualizarMercadoria);
 			
-			Link linkProprioExcluirMercadoria = WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(MercadoriaControle.class)
-							.excluirMercadoria(mercadoria, id))
-					.withSelfRel();
-			mercadoria.add(linkProprioExcluirMercadoria);	
-			
 		}
 	}
-
+	
 	@Override
 	public void adicionarLink(Mercadoria objeto) {
 		Link linkProprioObterMercadoria = WebMvcLinkBuilder
@@ -72,26 +61,37 @@ public class AdicionadorLinkMercadoria implements AdicionadorLink<Mercadoria> {
 				.withRel("mercadorias");
 		objeto.add(linkProprioObterMercadorias);
 		
-		Link linkProprioCadastrarMercadoria = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder
-						.methodOn(MercadoriaControle.class)
-						.cadastrarMercadoria(objeto, id))
-				.withRel("cadastrar");
-		objeto.add(linkProprioCadastrarMercadoria);
-		
 		Link linkProprioAtualizarMercadoria = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
 						.methodOn(MercadoriaControle.class)
 						.atualizarMercadoria(objeto))
-				.withRel("atualizar");
+				.withRel("atualizarMercadoria");
 		objeto.add(linkProprioAtualizarMercadoria);
 		
+	}
+	
+	
+	@Override
+	public void adicionarLink(Mercadoria objeto, Empresa empresa) {
 		Link linkProprioExcluirMercadoria = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder
-						.methodOn(EmailControle.class)
-						.excluirEmail(objeto, id))
-				.withRel("excluir");
+						.methodOn(MercadoriaControle.class)
+						.excluirMercadoria(objeto, empresa.getId()))
+				.withRel("excluirMercadoria");
 		objeto.add(linkProprioExcluirMercadoria);
 		
 	}
+
+	@Override
+	public void adicionarLink(Mercadoria objeto, Usuario usuario) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void adicionarLink(Mercadoria objeto, Mercadoria mercadoria) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
